@@ -11,14 +11,6 @@
 
 defined('ABSPATH') or die();
 
-register_activation_hook( __FILE__, 'sp_activate' );
-function sp_activate() {
-	register_setting('general','sp_host', 'esc_attr');
-	register_setting('general','sp_port', 'esc_attr');
-	register_setting('general','sp_username', 'esc_attr');
-	register_setting('general','sp_password', 'esc_attr');
-	register_setting('general','sp_dfilepath', 'esc_attr');
-}
 register_deactivation_hook( __FILE__, 'sp_deactivate' );
 function sp_deactivate() {
 	unregister_setting('general','sp_host', 'esc_attr');
@@ -94,6 +86,12 @@ function sp_settings() {
 			'sp_dfilepath',
 		)
 	);
+
+	register_setting('general','sp_host', 'esc_attr');
+	register_setting('general','sp_port', 'esc_attr');
+	register_setting('general','sp_username', 'esc_attr');
+	register_setting('general','sp_password', 'esc_attr');
+	register_setting('general','sp_dfilepath', 'esc_attr');
 }
 
 function sp_section_options_callback() { // Section Callback
