@@ -143,7 +143,7 @@ endwhile;
 	get the remote version of the flat file
 \*------------------------------------------------*/
 // source file path
-$sFilePath = plugin_basename(__DIR__) . '/output/BTInbound.txt';
+$sFilePath = plugin_dir_path(__DIR__) . plugin_basename(__DIR__) . '/output/BTInbound.txt';
 
 try {
 	if (
@@ -151,29 +151,30 @@ try {
 		!($spPort = get_option('sp_port')) ||
 		!($spUsername = get_option('sp_username')) ||
 		!($spPassword = get_option('sp_password')) ||
-		!($dFilePath = get_option('sp_dfilepath'))
-		// !($dFilePath = '/data/jdedwards/e910/PY910/import')
+		!($dFilePath = get_option('sp_dfilepath') . '/BTInbound.txt')
 		) {
 		throw new Exception('Missing connection information...', 0);
 	}
 
-	// open an ssh connection resource
+	// create an connection resource
 	if (!$ssh2_connect = @ssh2_connect($spHost, $spPort)) {
 		throw new Exception('Connection to remote server failed...', 0);
 	}
 
+	// cauthenticate with the connection resource
 	if (!@ssh2_auth_password($ssh2_connect, $spUsername, $spPassword)) {
 		throw new Exception('Authentication with remote server failed...', 0);
 	}
 
+	// open the SSH connection
 	$ssh2_sftp = ssh2_sftp($ssh2_connect);
+
 	// if the remote file exists, copy it
 	if (@ssh2_sftp_stat($ssh2_sftp, $dFilePath)) {
-		if (!@ssh2_scp_recv($ssh2_sftp, $dFilePath, $sFilePath)) {
+		if (!@ssh2_scp_recv($ssh2_connect, $dFilePath, $sFilePath)) {
 			throw new Exception('Receiving file from remote server failed...', 0);
 		}
 	}
-	throw new Exception('Interaction with remote server SUCCESSFUL...', 1);
 
 	/*------------------------------------------------*\
 		save flat file
@@ -200,7 +201,7 @@ try {
 	echo json_encode(
 		array(
 			'status' => 1,
-			'message' => 'XXX vetted Service Partners batched to remote server...',
+			'message' => count($arrData) . ' vetted Service Partners batched to remote server...',
 			)
 		);
 
