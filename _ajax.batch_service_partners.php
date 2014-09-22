@@ -197,6 +197,8 @@ try {
 		throw new Exception('Sending file to remote server failed...', 0);
 	}
 
+	unlink($sFilePath);
+
 	// response output
 	echo json_encode(
 		array(
@@ -204,6 +206,7 @@ try {
 			'message' => count($arrData) . ' vetted Service Partners batched to remote server...',
 			)
 		);
+
 
 	// close the ssh2 connection
 	if (!@ssh2_exec($ssh2_connect, 'exit')) {
