@@ -207,7 +207,6 @@ try {
 			)
 		);
 
-
 	// close the ssh2 connection
 	if (!@ssh2_exec($ssh2_connect, 'exit')) {
 		throw new Exception('Closing session with remote server failed...', 0);
