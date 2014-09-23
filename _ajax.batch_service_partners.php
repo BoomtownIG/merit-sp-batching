@@ -82,71 +82,83 @@ $objSPs = new WP_Query(array(
 /*------------------------------------------------*\
 	loop through sp's adding them to master array
 \*------------------------------------------------*/
-while ($objSPs->have_posts()):
-	$objSPs->the_post();
+if ($objSPs->have_posts()) :
+	while ($objSPs->have_posts()):
+		$objSPs->the_post();
 
-	// modifications necessary for Other_Services field
-	$sOtherServices	= preg_replace("/&#?[a-z0-9]+;/i","", strip_tags($arrFields['sp_capabilities_other']));
-	$sOtherServices	= str_replace(array("\n", "\r"), '', $sOtherServices);
+		// modifications necessary for Other_Services field
+		$sOtherServices	= preg_replace("/&#?[a-z0-9]+;/i","", strip_tags($arrFields['sp_capabilities_other']));
+		$sOtherServices	= str_replace(array("\n", "\r"), '', $sOtherServices);
 
-	$arrRow		= array();
-	$arrFields	= get_fields($objSPs->post->ID);
-	$arrRow[]	= 1;
-	$arrRow[]	= 'BOOM'.$objSPs->post->ID;
-	$arrRow[]	= $arrFields['sp_company_name'];
-	$arrRow[]	= $arrFields['sp_address_1'];
-	$arrRow[]	= $arrFields['sp_address_2'];
-	$arrRow[]	= $arrFields['sp_state'][0];
-	$arrRow[]	= $arrFields['sp_county'][0];
-	$arrRow[]	= $wpdb->get_var('SELECT city FROM _zipcodes WHERE zipcode_id = '.$arrFields['sp_city_zip'][0]);
-	$arrRow[]	= $arrFields['sp_city_zip'][0];
-	$arrRow[]	= $arrFields['sp_phone_work'];
-	$arrRow[]	= $arrFields['sp_phone_24_hour'];
-	$arrRow[]	= $arrFields['sp_phone_mobile'];
-	$arrRow[]	= $arrFields['sp_fax'];
-	$arrRow[]	= $arrFields['sp_url'];
-	$arrRow[]	= $arrFields['sp_contact_main_email'];
-	$arrRow[]	= $arrFields['sp_year_est'];
-	$arrRow[]	= $arrFields['sp_is_woman_owned'] ? 1 : 0;
-	$arrRow[]	= $arrFields['sp_is_minority_owned'] ? 1 : 0;
-	$arrRow[]	= 0;
-	$arrRow[]	= 0;
-	$arrRow[]	= $arrFields['sp_is_headquarters'] ? 1 : 0;
-	$arrRow[]	= $arrFields['sp_annual_revenue'];
-	$arrRow[]	= $arrFields['sp_has_comprehensive_liability'] ? 1 : 0;
-	$arrRow[]	= $arrFields['sp_has_automobile_liability'] ? 1 : 0;
-	$arrRow[]	= $arrFields['sp_has_workers_compensation'] ? 1 : 0;
-	$arrRow[]	= is_array($arrFields['sp_states_serviced']) ? implode(':', $arrFields['sp_states_serviced']) : '';
-	$arrRow[]	= is_array($arrFields['sp_counties_serviced']) ? implode(':', $arrFields['sp_counties_serviced']) : '';
-	$arrRow[]	= is_array($arrFields['sp_cities_zips_serviced']) ? implode(':', $arrFields['sp_cities_zips_serviced']) : '';
-	$arrRow[]	= $arrFields['sp_contact_main_first'];
-	$arrRow[]	= $arrFields['sp_contact_main_last'];
-	$arrRow[]	= $arrFields['sp_contact_main_phone'];
-	$arrRow[]	= $arrFields['sp_contact_main_phonemobile'];
-	$arrRow[]	= $arrFields['sp_contact_main_email'];
-	$arrRow[]	= is_array($arrFields['sp_capabilities']) ? implode(':', $arrFields['sp_capabilities']) : '';
-	$arrRow[]	= $sOtherServices;
-	$arrRow[]	= $arrFields['sp_qty_plowing_trucks'];
-	$arrRow[]	= $arrFields['sp_qty_salt_trucks'];
-	$arrRow[]	= $arrFields['sp_qty_skid_steers'];
-	$arrRow[]	= $arrFields['sp_qty_backhoes'];
-	$arrRow[]	= $arrFields['sp_qty_pushers'];
-	$arrRow[]	= $arrFields['sp_qty_rubber_tire_loaders'];
-	$arrRow[]	= $arrFields['sp_qty_landscape_trucks'];
-	$arrRow[]	= $arrFields['sp_qty_sweeper_trucks'];
-	$arrRow[]	= $arrFields['sp_qty_snowice_laborers'];
-	$arrRow[]	= $arrFields['sp_qty_prop_laborers'];
+		$arrRow		= array();
+		$arrFields	= get_fields($objSPs->post->ID);
+		$arrRow[]	= 1;
+		$arrRow[]	= 'BOOM'.$objSPs->post->ID;
+		$arrRow[]	= $arrFields['sp_company_name'];
+		$arrRow[]	= $arrFields['sp_address_1'];
+		$arrRow[]	= $arrFields['sp_address_2'];
+		$arrRow[]	= $arrFields['sp_state'][0];
+		$arrRow[]	= $arrFields['sp_county'][0];
+		$arrRow[]	= $wpdb->get_var('SELECT city FROM _zipcodes WHERE zipcode_id = '.$arrFields['sp_city_zip'][0]);
+		$arrRow[]	= $arrFields['sp_city_zip'][0];
+		$arrRow[]	= $arrFields['sp_phone_work'];
+		$arrRow[]	= $arrFields['sp_phone_24_hour'];
+		$arrRow[]	= $arrFields['sp_phone_mobile'];
+		$arrRow[]	= $arrFields['sp_fax'];
+		$arrRow[]	= $arrFields['sp_url'];
+		$arrRow[]	= $arrFields['sp_contact_main_email'];
+		$arrRow[]	= $arrFields['sp_year_est'];
+		$arrRow[]	= $arrFields['sp_is_woman_owned'] ? 1 : 0;
+		$arrRow[]	= $arrFields['sp_is_minority_owned'] ? 1 : 0;
+		$arrRow[]	= 0;
+		$arrRow[]	= 0;
+		$arrRow[]	= $arrFields['sp_is_headquarters'] ? 1 : 0;
+		$arrRow[]	= $arrFields['sp_annual_revenue'];
+		$arrRow[]	= $arrFields['sp_has_comprehensive_liability'] ? 1 : 0;
+		$arrRow[]	= $arrFields['sp_has_automobile_liability'] ? 1 : 0;
+		$arrRow[]	= $arrFields['sp_has_workers_compensation'] ? 1 : 0;
+		$arrRow[]	= is_array($arrFields['sp_states_serviced']) ? implode(':', $arrFields['sp_states_serviced']) : '';
+		$arrRow[]	= is_array($arrFields['sp_counties_serviced']) ? implode(':', $arrFields['sp_counties_serviced']) : '';
+		$arrRow[]	= is_array($arrFields['sp_cities_zips_serviced']) ? implode(':', $arrFields['sp_cities_zips_serviced']) : '';
+		$arrRow[]	= $arrFields['sp_contact_main_first'];
+		$arrRow[]	= $arrFields['sp_contact_main_last'];
+		$arrRow[]	= $arrFields['sp_contact_main_phone'];
+		$arrRow[]	= $arrFields['sp_contact_main_phonemobile'];
+		$arrRow[]	= $arrFields['sp_contact_main_email'];
+		$arrRow[]	= is_array($arrFields['sp_capabilities']) ? implode(':', $arrFields['sp_capabilities']) : '';
+		$arrRow[]	= $sOtherServices;
+		$arrRow[]	= $arrFields['sp_qty_plowing_trucks'];
+		$arrRow[]	= $arrFields['sp_qty_salt_trucks'];
+		$arrRow[]	= $arrFields['sp_qty_skid_steers'];
+		$arrRow[]	= $arrFields['sp_qty_backhoes'];
+		$arrRow[]	= $arrFields['sp_qty_pushers'];
+		$arrRow[]	= $arrFields['sp_qty_rubber_tire_loaders'];
+		$arrRow[]	= $arrFields['sp_qty_landscape_trucks'];
+		$arrRow[]	= $arrFields['sp_qty_sweeper_trucks'];
+		$arrRow[]	= $arrFields['sp_qty_snowice_laborers'];
+		$arrRow[]	= $arrFields['sp_qty_prop_laborers'];
 
-	/*--------------------------------------------------------------------------------------------------*\
-		loop through this row appending some bogus characters onto the end of each field so we can later
-		force double quotes around empty fields in the resulting flat file
-	\*--------------------------------------------------------------------------------------------------*/
-	foreach ($arrRow as $key => $value):
-		$arrRow[$key] = $value.'#@ @#';
-	endforeach;
+		/*--------------------------------------------------------------------------------------------------*\
+			loop through this row appending some bogus characters onto the end of each field so we can later
+			force double quotes around empty fields in the resulting flat file
+		\*--------------------------------------------------------------------------------------------------*/
+		foreach ($arrRow as $key => $value):
+			$arrRow[$key] = $value.'#@ @#';
+		endforeach;
 
-	$arrData[]	= $arrRow;
-endwhile;
+		$arrData[]	= $arrRow;
+	endwhile;
+else :
+	// response output
+	echo json_encode(
+		array(
+			'status' => 1,
+			'message' => 'No vetted Service Partners waiting to be batched to remote server...',
+			)
+		);
+
+	exit;
+endif;
 
 
 /*------------------------------------------------*\
