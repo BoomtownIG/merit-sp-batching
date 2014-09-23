@@ -64,9 +64,19 @@ $arrData = array(
 	get applicable service partner records
 \*------------------------------------------------*/
 $objSPs = new WP_Query(array(
-	'meta_key' => 'sp_vetted',
-	'meta_value' => '1',
 	'post_type'	=> 'mss_service_partner',
+	'meta_query' => array(
+		'relation' => 'AND',
+		array(
+			'key'     => 'sp_vetted',
+			'value'   => '1',
+			'compare' => '=',
+		),
+		array(
+			'key'     => 'sp_batched',
+			'compare' => 'NOT EXISTS',
+		),
+	)
 ));
 
 /*------------------------------------------------*\
@@ -206,6 +216,11 @@ try {
 			'message' => count($arrData) . ' vetted Service Partners batched to remote server...',
 			)
 		);
+
+	while ($objSPs->have_posts()):
+		$objSPs->the_post();
+		update_post_meta($objSPs->post->ID, 'sp_batched', '1');
+	endwhile;
 
 	// close the ssh2 connection
 	if (!@ssh2_exec($ssh2_connect, 'exit')) {
