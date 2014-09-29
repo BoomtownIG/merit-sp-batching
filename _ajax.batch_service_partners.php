@@ -218,6 +218,9 @@ try {
 	if (!@ssh2_scp_send($ssh2_connect, $sFilePath, $dFilePath)) {
 		throw new Exception('Sending file to remote server failed...', 0);
 	}
+	if (!@ssh2_sftp_stat($ssh2_sftp, $dFilePath)) {
+		throw new Exception('Could not find file on remote server after uploading...', 0);
+	}
 
 	unlink($sFilePath);
 
