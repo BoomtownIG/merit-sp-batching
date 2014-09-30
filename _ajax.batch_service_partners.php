@@ -165,7 +165,10 @@ endif;
 	get the remote version of the flat file
 \*------------------------------------------------*/
 // source file path
-$sFilePath = plugin_dir_path(__DIR__) . plugin_basename(__DIR__) . '/output/BTInbound.txt';
+// // > PHP 5.2
+// $sFilePath = plugin_dir_path(__DIR__) . plugin_basename(__DIR__) . '/output/BTInbound.txt';
+// < PHP 5.3
+$sFilePath = dirname(__FILE__) . '/output/BTInbound.txt';
 
 try {
 	if (
