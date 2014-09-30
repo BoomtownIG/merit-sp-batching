@@ -161,7 +161,7 @@ function sp_table_filtering($where) {
 *****************************************************************/
 add_filter( 'views_edit-mss_service_partner', 'sp_add_batch_button' );
 function sp_add_batch_button($views) {
-	$views['my-button'] = '<button id="batch-vetted-records" type="button"  title="Batch Vetted Records" style="margin:5px">Batch Vetted Records</button>';
+	$views['batch-button'] = '<button id="batch-vetted-records" type="button"  title="Batch Vetted Records" style="margin:5px">Batch Vetted Records</button>';
 	return $views;
 }
 
@@ -178,6 +178,7 @@ function sp_move_batch_button() {
 	?>
 		<script type="text/javascript">
 			jQuery(document).ready( function($) {
+				$('span.displaying-num').parents('.no-pages').show();
 				$('#batch-vetted-records')
 					.prependTo('span.displaying-num')
 					.click(function(evt) {
