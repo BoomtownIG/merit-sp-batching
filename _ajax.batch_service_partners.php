@@ -206,7 +206,7 @@ try {
 	\*------------------------------------------------*/
 	$file = fopen($sFilePath, 'a');
 	foreach ($arrData as $row):
-		fputcsv($file, $row);
+		fputcsv($file, $row, '|');
 	endforeach;
 	fclose($file);
 
