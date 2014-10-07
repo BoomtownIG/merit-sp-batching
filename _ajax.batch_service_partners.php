@@ -85,13 +85,13 @@ $objSPs = new WP_Query(array(
 if ($objSPs->have_posts()) :
 	while ($objSPs->have_posts()):
 		$objSPs->the_post();
+		$arrFields	= get_fields($objSPs->post->ID);
 
 		// modifications necessary for Other_Services field
 		$sOtherServices	= preg_replace("/&#?[a-z0-9]+;/i","", strip_tags($arrFields['sp_capabilities_other']));
 		$sOtherServices	= str_replace(array("\n", "\r"), '', $sOtherServices);
 
 		$arrRow		= array();
-		$arrFields	= get_fields($objSPs->post->ID);
 		$arrRow[]	= 1;
 		$arrRow[]	= 'BOOM'.$objSPs->post->ID;
 		$arrRow[]	= $arrFields['sp_company_name'];
